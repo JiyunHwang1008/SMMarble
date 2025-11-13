@@ -29,12 +29,12 @@
     C+,
     C0,
     C-
-*/s
+*/
 
 
 
 //object generation
-int smmObj_genNode(void);
+int smmObj_genNode(char* name, int type, int credit, int energy);
 
 //member retrieving
 
