@@ -20,6 +20,7 @@
 static int board_nr;
 static int food_nr;
 static int festival_nr;
+static int player_nr;
 
 
 
@@ -140,14 +141,19 @@ int main(int argc, const char * argv[]) {
     
     
     //2. Player configuration ---------------------------------------------------------------------------------
-    /*
+    
     do
     {
         //input player number to player_nr
+        printf("Input player number: ");
+        scanf("%i", &player_nr);
+        
+        if (player_nr <=0 || player_nr > MAX_PLAYER)
+           printf("Invalid player number!\n");
     }
-    while ();
+    while (player_nr <=0 || player_nr > MAX_PLAYER);
     generatePlayers();
-    */
+    
     
     
     
