@@ -40,6 +40,8 @@ void printGrades(int player); //print all the grade history of the player
 
 
 
+
+
 int rolldie(int player)
 {
     char c;
