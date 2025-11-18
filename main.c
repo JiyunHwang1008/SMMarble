@@ -22,24 +22,49 @@ static int food_nr;
 static int festival_nr;
 static int player_nr;
 
+static int player_pos[MAX_PLAYER];
+static int player_credit[MAX_PLAYER];
+static int player_name[MAX_PLAYER][MAX_CHARNAME ];
+static int player_energy[MAX_PLAYER];
 
+void generatePlayers(int n, int initEnergy); //generate a new player
+void printPlayerStatus(void); //print all player status at the beginning of each turn
 
 //function prototypes
 #if 0
 int isGraduated(void); //check if any player is graduated
-void generatePlayers(int n, int initEnergy); //generate a new player
 void printGrades(int player); //print grade history of the player
 void goForward(int player, int step); //make player go "step" steps on the board (check if player is graduated)
-void printPlayerStatus(void); //print all player status at the beginning of each turn
 float calcAverageGrade(int player); //calculate average grade of the player
 smmGrade_e takeLecture(int player, char *lectureName, int credit); //take the lecture (insert a grade of the player)
 void* findGrade(int player, char *lectureName); //find the grade from the player's grade history
 void printGrades(int player); //print all the grade history of the player
 #endif
 
+void printPlayerStatus(void)
+{
+	 int i;
+     for (i=0; i<player_nr; i++)
+    {  
+        printf("%s - position:%i(%s), credit:%i, energy:%i\n",
+	           player_name[i], player_pos[i], smmobj_getName(player_pos[i]), player_credit[i], player_energy[i] ); 
+	}
+}
 
-
-
+void generatePlayers(int n, int initEnergy) //generate a new player
+{
+     int i;
+     for (i=0; i<n; i++)
+    {
+	    player_pos[i] = 0;
+        player_credit[i] = 0;
+        player_energy[i] = initEnergy;
+        
+        printf("Input %i-th player name:");
+        scanf("%s", &player_name[i][0]);
+        
+	}
+}
 
 
 int rolldie(int player)
@@ -78,6 +103,8 @@ int main(int argc, const char * argv[]) {
     int type;
     int credit;
     int energy;
+    int cnt;
+    int turn;
     
     board_nr = 0;
     food_nr = 0;
@@ -99,7 +126,7 @@ int main(int argc, const char * argv[]) {
     while ( fscanf(fp, "%s %i %i %i", name, &type, &credit, &energy) == 4 ) //read a node parameter set
     {
         //store the parameter set
-        //printf("%s %i %i %i\n", name, type, credit, energy);
+        printf("%s %i %i %i\n", name, type, credit, energy);
         board_nr = smmObj_genNode(name, type, credit, energy);
     }
     fclose(fp);
@@ -140,7 +167,7 @@ int main(int argc, const char * argv[]) {
     fclose(fp);
     printf("Total number of festival cards : %i\n", festival_nr);
     
-    
+ #endif   
     
     //2. Player configuration ---------------------------------------------------------------------------------
     
@@ -149,44 +176,45 @@ int main(int argc, const char * argv[]) {
         //input player number to player_nr
         printf("Input player number: ");
         scanf("%i", &player_nr);
+        fflush(stdin);
         
         if (player_nr <=0 || player_nr > MAX_PLAYER)
            printf("Invalid player number!\n");
     }
     while (player_nr <=0 || player_nr > MAX_PLAYER);
-    generatePlayers();
     
     
     
     
+    generatePlayers(player_nr, smmobj_getEnergy(0));
     
     
     
-    
-    
- 
-    
+    cnt = 0;
+    turn = 0;
     //3. SM Marble game starts ---------------------------------------------------------------------------------
-    while () //is anybody graduated?
+    while (cnt < 5) //is anybody graduated?
     {
         int die_result;
         
         //4-1. initial printing
-        //printPlayerStatus();
+        printPlayerStatus();
         
         //4-2. die rolling (if not in experiment)
-        
+        die_result = rolldie(turn);
         
         //4-3. go forward
         //goForward();
+        //pos = pos + 2;
 
 		//4-4. take action at the destination node of the board
         //actionNode();
         
         //4-5. next turn
-        
+        cnt++;
+        turn = (turn + 1)%player_nr;
     }
-#endif
+
     system("PAUSE");
     return 0;
-}
+} //I'm so happy ^^
