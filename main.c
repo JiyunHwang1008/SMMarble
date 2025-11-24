@@ -34,13 +34,25 @@ void printPlayerStatus(void); //print all player status at the beginning of each
 #if 0
 int isGraduated(void); //check if any player is graduated
 void printGrades(int player); //print grade history of the player
-void goForward(int player, int step); //make player go "step" steps on the board (check if player is graduated)
 float calcAverageGrade(int player); //calculate average grade of the player
 smmGrade_e takeLecture(int player, char *lectureName, int credit); //take the lecture (insert a grade of the player)
 void* findGrade(int player, char *lectureName); //find the grade from the player's grade history
 void printGrades(int player); //print all the grade history of the player
 #endif
 
+void goForward(int player, int step)
+{  //make player go "step" steps on the board (check if player is graduated)
+     int i;
+     //player_pos[player] = player_pos[player] + step;
+     printf("start from %i(%s)  (%i)\n", player_pos[player], 
+		                                  smmobj_getName(player_pos[i]), step );
+     for(i=0; i<step; i++)
+     {
+     	player_pos[player] = (player_pos[player] + 1)%board_nr;
+     	printf("   => moved to %i(%s)\n", player_pos[player], 
+		                                  smmobj_getName(player_pos[i]) );
+	 }
+}
 void printPlayerStatus(void)
 {
 	 int i;
@@ -204,7 +216,7 @@ int main(int argc, const char * argv[]) {
         die_result = rolldie(turn);
         
         //4-3. go forward
-        //goForward();
+        goForward(turn, die_result);
         //pos = pos + 2;
 
 		//4-4. take action at the destination node of the board
@@ -217,4 +229,4 @@ int main(int argc, const char * argv[]) {
 
     system("PAUSE");
     return 0;
-} //I'm so happy ^^
+} // ^^
