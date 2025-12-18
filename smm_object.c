@@ -15,19 +15,19 @@
 
 
 
-#define GRADE_A+        0
-#define GRADE_A0        1
-#define GRADE_A-        2
-#define GRADE_B+        3
-#define GRADE_B0        4
-#define GRADE_B-        5
-#define GRADE_C+        6
-#define GRADE_C0        7
-#define GRADE_C-        8
-#define GRADE_D+        9
-#define GRADE_D0        10
-#define GRADE_D-        11
-#define GRADE_F         12
+#define GRADE_APLUS         0
+#define GRADE_A0            1
+#define GRADE_AMINUS        2
+#define GRADE_BPLUS         3
+#define GRADE_B0            4
+#define GRADE_BMINUS        5
+#define GRADE_CPLUS         6
+#define GRADE_C0            7
+#define GRADE_CMINUS        8
+#define GRADE_DPLUS         9
+#define GRADE_D0            10
+#define GRADE_DMINUS        11
+#define GRADE_F             12
 
 static char smmobj_nodeName [MAX_NODETYPE] [MAX_CHARNAME] ={
        "lecture",

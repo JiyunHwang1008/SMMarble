@@ -60,7 +60,6 @@ void* findGrade(int player, char *lectureName); //find the grade from the player
 	  }
 	  
 	  return NULL;
-	  
 }
 
 int isGraduated(void) //check if any player is graduated
