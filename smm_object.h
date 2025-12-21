@@ -51,14 +51,12 @@ void* smmObj_genObject(char* name, int objType, int type, int credit, int energy
 //member retrieving
 char* smmObj_getObjectName(int node_nr);
 int smmObj_getNodeType(int node_nr);
-int smmObj_getObjectEnergy(void *ptr);
+int smmObj_getObjectEnergy(void* ptr);
 int smmObj_getNodeCredit(int node_nr);
-int smmObj_getNodeEnergy(int node_nr); //^^ 추가: main.c의 actionNode에서 사용하기 위해 추가
+int smmObj_getNodeEnergy(int node_nr);
 
 //element to string
 char* smmObj_getTypeName(int node_type);
-
-//main.c에서 추가로 필요한 도우미 함수
 char* smmObj_getGradeName(int grade);
 int smmObj_getObjectGrade(void *ptr);
 char* smmObj_getObjectNamePtr(void *ptr);

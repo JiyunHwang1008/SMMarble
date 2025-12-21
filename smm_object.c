@@ -1,4 +1,4 @@
-//
+//  smm_object.c
 //  smm_node.c
 //  SMMarble
 //
@@ -7,9 +7,9 @@
 
 #include "smm_common.h"
 #include "smm_object.h"
-#include "smm_database.h" // ^^ line 10 modify 
+#include "smm_database.h"
 #include <string.h>
-#include <stdlib.h>      // ^^ line 12 modify 
+#include <stdlib.h>      
 
 
 #define MAX_NODENR      100
@@ -101,8 +101,6 @@ char* smmObj_getObjectName(int node_nr)
 	void* ptr = smmdb_getData(LISTNO_NODE, node_nr);
 	if(ptr == NULL) return NULL;
 	return ((smmObj_object_t*)ptr)->name;
-	/*smmObj_object_t* objPtr = (smmObj_object_t*)ptr;
-	return (objPtr->name);*/
 }
 
 int smmObj_getNodeType(int node_nr)
@@ -110,7 +108,6 @@ int smmObj_getNodeType(int node_nr)
 	void* ptr = smmdb_getData(LISTNO_NODE, node_nr);
 	if(ptr == NULL) return -1;
 	return ((smmObj_object_t*)ptr)->type;
-	/*return (smmObj_board[node_nr].type);*/
 }
 
 int smmObj_getNodeCredit(int node_nr)
@@ -118,7 +115,6 @@ int smmObj_getNodeCredit(int node_nr)
 	void* ptr = smmdb_getData(LISTNO_NODE, node_nr);
 	if(ptr == NULL) return 0;
 	return ((smmObj_object_t*)ptr)->credit;
-	/*return (smmObj_board[node_nr].credit);*/
 }
 
 int smmObj_getObjectEnergy(void *ptr)
@@ -133,8 +129,8 @@ int smmObj_getObjectEnergy(void *ptr)
 int smmObj_getNodeEnergy(int node_nr)
 {
     void* ptr = smmdb_getData(LISTNO_NODE, node_nr);
-    if(ptr == NULL) return 0;
-    return ((smmObj_object_t*)ptr)->energy;
+	if(ptr == NULL) return 0;
+	return ((smmObj_object_t*)ptr)->energy;
 }
 
 char* smmObj_getTypeName(int node_type)
@@ -147,15 +143,14 @@ char* smmObj_getTypeName(int node_type)
 #if 0
 char* smmObj_getGradeName(int grade)
 {
-	return smmObj_gradeName[grade];
-    /*return smmGradeName[grade];*/
+    return smmObj_gradeName[grade];
 }
 #endif
 
 char* smmObj_getGradeName(int grade)
 {
-    if (grade < 0 || grade >= SMMNODE_MAX_GRADE) return "Unknown";
-    return smmObj_gradeName[grade];
+	 if (grade < 0 || grade >= SMMNODE_MAX_GRADE) return "Unknown";
+	return smmObj_gradeName[grade];
 }
 
 int smmObj_getObjectGrade(void *ptr){

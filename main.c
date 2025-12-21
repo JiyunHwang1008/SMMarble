@@ -30,7 +30,7 @@ typedef struct {
 	int credit;
 	int energy;
 	int flag_graduated;
-	int experiment_time; //^^ Added: 실험실에 갇힌 턴 수를 관리하는 변수
+	int experiment_time; //실험실에 갇힌 턴 수를 관리하는 변수
 } smm_player_t; 
 
 smm_player_t *smm_players;
@@ -48,7 +48,7 @@ smmGrade_e takeLecture(int player, char *lectureName, int credit); //take the le
 void printGrades(int player); //print all the grade history of the player
 #endif
 
-//^^ Added: 플레이어의 성적 이력을 출력하는 함수 (rolldie 내부 'g'키 기능)
+//플레이어의 성적 이력을 출력하는 함수
 void printGrades(int player) {
     int i;
     int count = smmdb_len(LISTNO_OFFSET_GRADE + player);
@@ -64,11 +64,18 @@ void printGrades(int player) {
 int findLabNodeIndex(void) {
     int i;
     for(i=0; i<smm_board_nr; i++) {
+        
         if(smmObj_getNodeType(i) == SMMNODE_TYPE_LABORATORY)
             return i;
     }
     return 0; //Default to start if not found
 }
+
+
+
+
+
+
 
 
 
@@ -211,7 +218,7 @@ void actionNode(int player)
 	    }
 	    
 	    else {
-            printf("Already took this lecture.\n"); //^^ 추가: 중복 수강 메시지
+            printf("Already took this lecture.\n"); //중복 수강 메시지
         }
 			break;                 
     		
@@ -234,7 +241,7 @@ void actionNode(int player)
 		    break;   
 			    
         case SMMNODE_TYPE_GOTOLAB: 
-        //^^ 추가: 실험실로 이동하고 3턴 갇히는 로직 구현
+        //실험실로 이동하고 3턴 갇히는 로직 구현
             printf("Go to Lab! (Stuck for 3 turns)\n");
             smm_players[player].pos = findLabNodeIndex();
             smm_players[player].experiment_time = 3;
@@ -288,8 +295,8 @@ int main(int argc, const char * argv[]) {
         void* ptr;
         //printf("%s %i %i %i\n", name, type, credit, energy);
         ptr = smmObj_genObject(name, SMMNODE_OBJTYPE_BOARD, type, credit, energy, 0);
-        smmdb_addTail(LISTNO_NODE, ptr); //^^ 수정: 리스트 번호 상수 사용, 반환값 대신 직접 추가
-        smm_board_nr++; //^^ 추가: 보드 노드 개수 카운트
+        smmdb_addTail(LISTNO_NODE, ptr); 
+        smm_board_nr++; 
     }
     fclose(fp);
     printf("Total number of board nodes : %i\n", smm_board_nr);
@@ -370,7 +377,7 @@ int main(int argc, const char * argv[]) {
         //4-2. die rolling (if not in experiment)
         die_result = rolldie(turn);
         
-        //^^ 추가: 주사위 결과가 0이면(실험중) 이동 및 행동 스킵
+        
         if (die_result != 0) {
             //4-3. go forward
             goForward(turn, die_result);
