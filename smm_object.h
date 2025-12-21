@@ -62,3 +62,4 @@ int smmObj_getObjectGrade(void *ptr);
 char* smmObj_getObjectNamePtr(void *ptr);
 
 #endif /* smm_object_h */
+//@@

@@ -162,4 +162,4 @@ char* smmObj_getObjectNamePtr(void* ptr){
 	if(ptr == NULL) return NULL;
 	return ((smmObj_object_t*)ptr)->name;
 }
-
+//@@
