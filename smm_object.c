@@ -7,7 +7,10 @@
 
 #include "smm_common.h"
 #include "smm_object.h"
+#include "smm_database.h" // ^^ line 10 modify 
 #include <string.h>
+#include <stdlib.h>      // ^^ line 12 modify 
+
 
 #define MAX_NODENR      100
 #define MAX_NODETYPE    7
@@ -29,7 +32,7 @@
 #define GRADE_DMINUS        11
 #define GRADE_F             12
 
-static char smmobj_nodeName [MAX_NODETYPE] [MAX_CHARNAME] ={
+static char smmObj_nodeTypeName [7] [MAX_CHARNAME] ={
        "lecture",
        "restaurant",
        "laboratory",
@@ -39,7 +42,7 @@ static char smmobj_nodeName [MAX_NODETYPE] [MAX_CHARNAME] ={
        "festival"
 };
 
-static char smmobj_gradeName [MAX_GRADE] [MAX_CHARNAME] ={
+static char smmObj_gradeName [SMMNODE_MAX_GRADE] [MAX_CHARNAME] ={
        "A+",
        "A0",
        "A-",
@@ -65,23 +68,25 @@ typedef struct{
 	int credit;
 	int energy;
 	int grade;
-} smmobj_object_t;
+} smmObj_object_t;
 
  
 //object generation
 void* smmObj_genObject(char* name, int objType, int type, int credit, int energy, int grade)
 {
-	smmobj_object_t* ptr;
-	ptr = (smmobj_object_t*)malloc(sizeof(smmobj_object_t));
+	smmObj_object_t* ptr =
+	(smmObj_object_t*)malloc(sizeof(smmObj_object_t));
+	
+	if (ptr != NULL) {
 	
 	strcpy(ptr->name, name);
-    ptr->type = type;
     ptr->objType = objType;
+    ptr->type = type;
     ptr->credit = credit;
     ptr->energy = energy;
     ptr->grade = grade;
     
-    
+    }
     
     
     
@@ -91,39 +96,75 @@ void* smmObj_genObject(char* name, int objType, int type, int credit, int energy
 
 
 //member retrieving
-char* smmObj_getObjectName(void *ptr)
+char* smmObj_getObjectName(int node_nr)
 {
-	smmObj_object_t* objPtr = (smmObj_object_t*)ptr;
-	return (objPtr->name);
+	void* ptr = smmdb_getData(LISTNO_NODE, node_nr);
+	if(ptr == NULL) return NULL;
+	return ((smmObj_object_t*)ptr)->name;
+	/*smmObj_object_t* objPtr = (smmObj_object_t*)ptr;
+	return (objPtr->name);*/
 }
 
-int smmObj_getObjectType(int node_nr)
+int smmObj_getNodeType(int node_nr)
 {
-	return (smmObj_board[node_nr].type);
+	void* ptr = smmdb_getData(LISTNO_NODE, node_nr);
+	if(ptr == NULL) return -1;
+	return ((smmObj_object_t*)ptr)->type;
+	/*return (smmObj_board[node_nr].type);*/
 }
 
-int smmObj_getObjectCredit(int node_nr)
+int smmObj_getNodeCredit(int node_nr)
 {
-	return (smmObj_board[node_nr].credit);
+	void* ptr = smmdb_getData(LISTNO_NODE, node_nr);
+	if(ptr == NULL) return 0;
+	return ((smmObj_object_t*)ptr)->credit;
+	/*return (smmObj_board[node_nr].credit);*/
 }
 
 int smmObj_getObjectEnergy(void *ptr)
 {
-	smmObj_object_t* objPtr = (smmObj_object_t*)ptr;
-	return (objPtr->energy);
+	if(ptr == NULL) return 0;
+	return ((smmObj_object_t*)ptr)->energy;
+	/*smmObj_object_t* objPtr = (smmObj_object_t*)ptr;
+	return (objPtr->energy);*/
 	
+}
+
+int smmObj_getNodeEnergy(int node_nr)
+{
+    void* ptr = smmdb_getData(LISTNO_NODE, node_nr);
+    if(ptr == NULL) return 0;
+    return ((smmObj_object_t*)ptr)->energy;
 }
 
 char* smmObj_getTypeName(int node_type)
 {
-	return (smmObj_nodeName[node_type]);
+	if(node_type < 0 || node_type >= MAX_NODETYPE) return "Unknown";
+	return smmObj_nodeTypeName[node_type];
 }
 
 
 #if 0
-char* smmObj_getGradeName(smmGrade_e grade)
+char* smmObj_getGradeName(int grade)
 {
-    return smmGradeName[grade];
+	return smmObj_gradeName[grade];
+    /*return smmGradeName[grade];*/
 }
 #endif
+
+char* smmObj_getGradeName(int grade)
+{
+    if (grade < 0 || grade >= SMMNODE_MAX_GRADE) return "Unknown";
+    return smmObj_gradeName[grade];
+}
+
+int smmObj_getObjectGrade(void *ptr){
+	if(ptr == NULL) return 0;
+	return ((smmObj_object_t*)ptr)->grade;
+}
+
+char* smmObj_getObjectNamePtr(void* ptr){
+	if(ptr == NULL) return NULL;
+	return ((smmObj_object_t*)ptr)->name;
+}
 

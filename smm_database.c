@@ -7,6 +7,7 @@
 
 #include "smm_common.h"
 #include "smm_database.h"
+#include <stdlib.h>
 
 #define LIST_END            -1
 #define MAX_LIST            LISTNO_OFFSET_GRADE+MAX_PLAYER
@@ -15,8 +16,8 @@
 typedef struct node{
     int index;      //index of the node
     void* obj;      //object data
-    void* next;         //pointer to the next
-    void* prev;         //pointer to the next
+    struct node* next;         //pointer to the next
+    struct node* prev;         //pointer to the next
 } node_t;
 
 
@@ -164,28 +165,36 @@ int smmdb_deleteData(int list_nr, int index)
     {
         ndPrevPtr->next = delNdPtr->next;
     }
+    else
+    {
+        list_database[list_nr] = delNdPtr->next;
+    }
+    
     ndNextPtr = delNdPtr->next;
     if (ndNextPtr != NULL)
     {
         ndNextPtr->prev = delNdPtr->prev;
     }
     
-    free(delNdPtr->obj);
+    if (delNdPtr->obj != NULL) free(delNdPtr->obj);
     free(delNdPtr);
     
+   
     list_cnt[list_nr]--;
     
     if (list_cnt[list_nr] == 0)
     {
         list_database[list_nr] = NULL;
+        listPtr[list_nr] = NULL; 
     }
     else
     {
-        updateIndex(list_nr);
+        updateIndex(list_nr); 
     }
     
     return 0;
 }
+   
 
 
 //functions for list observation -----------------------------
